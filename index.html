@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>张致远 · 地理信息 × AI</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Font: Space Grotesk -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+    <!-- Remix Icon -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/remixicon@4.3.0/fonts/remixicon.css" />
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Space Grotesk', system-ui, sans-serif;
+            background: #FFFDF0;
+            color: #111;
+            padding-top: 80px;
+            overflow-x: hidden;
+            background-image: radial-gradient(circle, #000000 1.2px, transparent 1.2px);
+            background-size: 20px 20px;
+            background-position: 0 0;
+        }
+        .brutal-border { border: 2px solid #000 !important; }
+        .brutal-shadow { box-shadow: 4px 4px 0px 0px #000 !important; }
+        .brutal-shadow-sm { box-shadow: 2px 2px 0px 0px #000 !important; }
+        .brutal-shadow-lg { box-shadow: 6px 6px 0px 0px #000 !important; }
+        .sticker { display: inline-block; transform: rotate(var(--rot, 0deg)); }
+        .brutal-btn {
+            transition: all 0.08s ease;
+            box-shadow: 4px 4px 0px 0px #000;
+            border: 2px solid #000;
+            cursor: pointer;
+        }
+        .brutal-btn:hover { transform: translate(2px, 2px); box-shadow: 2px 2px 0px 0px #000; }
+        .brutal-btn:active { transform: translate(4px, 4px); box-shadow: 0px 0px 0px 0px #000; }
+        .brutal-card {
+            transition: all 0.15s ease;
+            border: 2px solid #000;
+            box-shadow: 4px 4px 0px 0px #000;
+            background: #ffffff;
+        }
+        .brutal-card:hover { transform: translate(-2px, -2px); box-shadow: 6px 6px 0px 0px #000; }
+        .nav-brutal {
+            background: #FFFDF0;
+            border-bottom: 3px solid #000;
+            box-shadow: 0 4px 0px 0px #000;
+        }
+        .badge-sticker {
+            display: inline-block;
+            transform: rotate(var(--rot, 0deg));
+            border: 2px solid #000;
+            font-weight: 700;
+            padding: 0.15rem 0.75rem;
+            background: #fff;
+            box-shadow: 2px 2px 0px 0px #000;
+            margin: 0.1rem;
+        }
+        .bg-mint { background: #A3E635; }
+        .bg-purple { background: #C084FC; }
+        .bg-yellow { background: #FDE047; }
+        .bg-sky { background: #38BDF8; }
+        .bg-pink { background: #F472B6; }
+        .text-black { color: #000; }
+        .title-black { font-weight: 900; letter-spacing: -0.02em; }
+        .cert-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            gap: 1rem;
+        }
+        .cert-grid img {
+            border: 2px solid #000;
+            box-shadow: 3px 3px 0px 0px #000;
+            width: 100%;
+            aspect-ratio: 1 / 1;
+            object-fit: cover;
+            transition: 0.1s ease;
+        }
+        .cert-grid img:hover {
+            transform: translate(-2px, -2px);
+            box-shadow: 5px 5px 0px 0px #000;
+        }
+        ::-webkit-scrollbar { width: 10px; background: #FFFDF0; }
+        ::-webkit-scrollbar-thumb { background: #000; border: 2px solid #FFFDF0; }
+        @media (max-width: 640px) {
+            .brutal-shadow { box-shadow: 3px 3px 0px 0px #000 !important; }
+            .brutal-btn { box-shadow: 3px 3px 0px 0px #000; }
+            .brutal-btn:hover { transform: translate(1px, 1px); box-shadow: 2px 2px 0px 0px #000; }
+            .brutal-btn:active { transform: translate(3px, 3px); box-shadow: 0px 0px 0px 0px #000; }
+        }
+        .avatar-img {
+            border: 3px solid #000;
+            box-shadow: 4px 4px 0px 0px #000;
+            width: 120px;
+            height: 120px;
+            object-fit: cover;
+            background: #fff;
+        }
+        @media (max-width: 640px) {
+            .avatar-img { width: 90px; height: 90px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ===== 导航栏 ===== -->
+    <nav class="nav-brutal fixed top-0 left-0 w-full z-50 px-4 sm:px-6 py-3 flex items-center justify-between">
+        <div class="flex items-center gap-2">
+            <span class="text-2xl font-black tracking-tight">张致远<span class="text-black">·</span>GIS+AI</span>
+        </div>
+        <div class="flex items-center gap-3 sm:gap-5 text-base font-bold">
+            <a href="#hero" class="hover:underline underline-offset-4 decoration-2">首页</a>
+            <a href="#experience" class="hover:underline underline-offset-4 decoration-2 hidden sm:inline">经历</a>
+            <a href="#projects" class="hover:underline underline-offset-4 decoration-2 hidden sm:inline">项目</a>
+            <a href="#skills" class="hover:underline underline-offset-4 decoration-2 hidden sm:inline">技能</a>
+            <a href="#certificates" class="hover:underline underline-offset-4 decoration-2 hidden sm:inline">证书</a>
+            <a href="#gallery" class="hover:underline underline-offset-4 decoration-2">随拍</a>
+            <button onclick="window.print()" class="brutal-btn bg-yellow px-3 py-1 text-sm font-bold flex items-center gap-1">
+                <i class="ri-printer-line"></i> 打印
+            </button>
+        </div>
+    </nav>
+
+    <!-- ===== 主容器 ===== -->
+    <main class="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 pb-16">
+
+        <!-- ===== Hero ===== -->
+        <section id="hero" class="brutal-card p-6 sm:p-10 mb-8 bg-white">
+            <div class="flex flex-col md:flex-row md:items-start gap-6">
+                <!-- 左侧：头像 + 文字 -->
+                <div class="flex-1 flex flex-col md:flex-row gap-4 items-center md:items-start">
+                    <div class="flex-shrink-0">
+                        <img src="微信图片_20260826153711_119_789.jpg" alt="商务照" class="avatar-img" onerror="this.alt='加载失败';this.style.border='3px solid red'" />
+                    </div>
+                    <div>
+                        <h1 class="text-3xl sm:text-4xl font-black leading-tight">
+                            张致远 <span class="bg-mint px-2 inline-block">·</span> 地理信息 <span class="bg-yellow px-2 inline-block">×</span> 人工智能
+                        </h1>
+                        <p class="mt-3 text-base sm:text-lg font-medium leading-relaxed">
+                            中国地质大学（武汉）地理科学专业（规划 GIS 方向），准大一。<br />
+                            融合地信与 AI 技术，拥有 14 项行业权威认证，具备 Python 基础、大模型应用、RAG、智能体开发等能力。
+                        </p>
+                        <div class="mt-3 flex flex-wrap gap-x-4 gap-y-1 text-sm font-bold">
+                            <span><i class="ri-map-pin-2-line"></i> 山东 · 高考 603 分</span>
+                            <span><i class="ri-github-fill"></i> <a href="https://github.com/zzyisshen" target="_blank" class="underline hover:no-underline">zzyisshen</a></span>
+                            <span><i class="ri-wechat-2-line"></i> zzy715080</span>
+                        </div>
+                        <!-- 爱好标签 -->
+                        <div class="mt-3 flex flex-wrap gap-2">
+                            <span class="badge-sticker" style="--rot:-1deg; background:#A3E635;"><i class="ri-robot-line"></i> 机器人</span>
+                            <span class="badge-sticker" style="--rot:1.5deg; background:#C084FC;"><i class="ri-cpu-line"></i> AI</span>
+                            <span class="badge-sticker" style="--rot:-0.8deg; background:#FDE047;"><i class="ri-computer-line"></i> 计算机</span>
+                            <span class="badge-sticker" style="--rot:1.2deg; background:#38BDF8;"><i class="ri-table-tennis-line"></i> 乒乓球 · 6年</span>
+                            <span class="badge-sticker" style="--rot:-0.5deg; background:#F472B6;"><i class="ri-run-line"></i> 跑步</span>
+                            <span class="badge-sticker" style="--rot:2deg; background:#A3E635;"><i class="ri-body-scan-line"></i> 健身</span>
+                        </div>
+                        <div class="mt-4 flex flex-wrap gap-2">
+                            <span class="badge-sticker" style="--rot:-1.5deg; background:#A3E635;">GIS</span>
+                            <span class="badge-sticker" style="--rot:1.2deg; background:#C084FC;">遥感</span>
+                            <span class="badge-sticker" style="--rot:-0.8deg; background:#FDE047;">RAG</span>
+                            <span class="badge-sticker" style="--rot:2deg; background:#38BDF8;">智能体</span>
+                            <span class="badge-sticker" style="--rot:-2.5deg; background:#F472B6;">Prompt</span>
+                            <span class="badge-sticker" style="--rot:1.8deg; background:#A3E635;">Python基础</span>
+                        </div>
+                        <div class="mt-5 flex flex-wrap gap-3">
+                            <button class="brutal-btn bg-mint px-5 py-2.5 font-bold text-black flex items-center gap-2" id="emailBtn">
+                                <i class="ri-mail-line"></i> 发送邮件
+                            </button>
+                            <button class="brutal-btn bg-yellow px-5 py-2.5 font-bold text-black flex items-center gap-2" onclick="copyEmail()">
+                                <i class="ri-file-copy-line"></i> 复制邮箱
+                            </button>
+                            <span class="flex items-center gap-1 font-bold text-sm px-3 py-1 border-2 border-black bg-white shadow-[2px_2px_0px_0px_#000]"><i class="ri-github-fill"></i> GitHub</span>
+                            <span class="flex items-center gap-1 font-bold text-sm px-3 py-1 border-2 border-black bg-white shadow-[2px_2px_0px_0px_#000]"><i class="ri-global-line"></i> 个人站 (计划)</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex-shrink-0 grid grid-cols-3 gap-3 w-full md:w-auto">
+                    <div class="brutal-card bg-white p-3 text-center flex-1 min-w-[70px]">
+                        <div class="text-3xl font-black bg-purple px-1 inline-block">14</div>
+                        <div class="text-xs font-bold mt-1">AI 认证</div>
+                    </div>
+                    <div class="brutal-card bg-white p-3 text-center flex-1 min-w-[70px]">
+                        <div class="text-3xl font-black bg-mint px-1 inline-block">40+</div>
+                        <div class="text-xs font-bold mt-1">教学学员</div>
+                    </div>
+                    <div class="brutal-card bg-white p-3 text-center flex-1 min-w-[70px]">
+                        <div class="text-3xl font-black bg-yellow px-1 inline-block">2</div>
+                        <div class="text-xs font-bold mt-1">班级授课</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== 亮点成果 ===== -->
+        <section class="mb-8">
+            <h2 class="text-2xl font-black flex items-center gap-2 mb-4"><i class="ri-flashlight-fill text-3xl"></i> 亮点成果</h2>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                <div class="brutal-card bg-white p-4 hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[6px_6px_0px_0px_#000] transition-all">
+                    <div class="text-3xl font-black bg-mint inline-block px-2">14</div>
+                    <div class="text-sm font-bold mt-1">AI 权威认证（讯飞、达摩院、阿里云等）</div>
+                </div>
+                <div class="brutal-card bg-white p-4 hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[6px_6px_0px_0px_#000] transition-all">
+                    <div class="text-3xl font-black bg-yellow inline-block px-2">40+</div>
+                    <div class="text-sm font-bold mt-1">暑期教学覆盖学员，班级反馈良好</div>
+                </div>
+                <div class="brutal-card bg-white p-4 hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[6px_6px_0px_0px_#000] transition-all">
+                    <div class="text-3xl font-black bg-sky inline-block px-2">83%</div>
+                    <div class="text-sm font-bold mt-1">（计划）AI 质检脚本 4h → 40min</div>
+                </div>
+                <div class="brutal-card bg-white p-4 hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[6px_6px_0px_0px_#000] transition-all">
+                    <div class="text-3xl font-black bg-purple inline-block px-2">6年</div>
+                    <div class="text-sm font-bold mt-1">乒乓球专项训练，持续运动习惯</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== 经历 ===== -->
+        <section id="experience" class="mb-8">
+            <h2 class="text-2xl font-black flex items-center gap-2 mb-4"><i class="ri-briefcase-line text-3xl"></i> 经历</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                <div class="brutal-card bg-white p-6">
+                    <div class="flex items-center gap-2 text-lg font-black bg-mint inline-block px-3 py-1 -mt-8 mb-2"><i class="ri-graduation-cap-line"></i> 教学实践</div>
+                    <div class="mt-2 space-y-4">
+                        <div>
+                            <div class="flex items-start gap-2">
+                                <i class="ri-calendar-2-line text-xl mt-0.5"></i>
+                                <div>
+                                    <h3 class="font-black text-lg">暑期英语教学（两个班）</h3>
+                                    <div class="text-sm font-bold">家教 / 托管 / 小班授课 · 2026.06 – 2026.08</div>
+                                    <ul class="mt-2 text-sm font-medium list-disc list-inside">
+                                        <li>承担英语家教、托管辅导及小班授课，共负责两个班级，每班约 20 人，合计 40+ 学员。</li>
+                                        <li>独立制定教学计划与课件，进行课堂讲解、作业批改与个别辅导，学生阶段性测试平均提升约 12%。</li>
+                                        <li>采用互动式教学方法，课堂参与度高，获得家长与学生一致好评。</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="brutal-card bg-white p-6">
+                    <div class="flex items-center gap-2 text-lg font-black bg-yellow inline-block px-3 py-1 -mt-8 mb-2"><i class="ri-code-line"></i> 技术项目</div>
+                    <div class="mt-2 space-y-4">
+                        <div>
+                            <div class="flex items-start gap-2">
+                                <i class="ri-calendar-2-line text-xl mt-0.5"></i>
+                                <div>
+                                    <h3 class="font-black text-lg">个人 AI 简历门户 &amp; 自动化 PPT</h3>
+                                    <div class="text-sm font-bold">独立开发 · 2027.11 – 至今</div>
+                                    <ul class="mt-2 text-sm font-medium list-disc list-inside">
+                                        <li>利用 Trae CN 搭建响应式简历站，集成技能矩阵与证书墙。</li>
+                                        <li>构建 AI→PPT 工作流（千问 API + python-pptx），单份 PPT 制作时间从 3 小时压缩至 20 分钟。</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex items-start gap-2">
+                                <i class="ri-calendar-2-line text-xl mt-0.5"></i>
+                                <div>
+                                    <h3 class="font-black text-lg">AI 赋能电商直播 &amp; 大学规划研修</h3>
+                                    <div class="text-sm font-bold">准大一暑假 · 2026.06 – 2026.08</div>
+                                    <ul class="mt-2 text-sm font-medium list-disc list-inside">
+                                        <li>参与 AI 在直播选品、话术生成、用户画像中的应用培训，完成模拟策划方案。</li>
+                                        <li>跟随行业导师制定 GIS+AI 个人成长路线图，明确大学四年发展目标。</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== 项目 ===== -->
+        <section id="projects" class="mb-8">
+            <h2 class="text-2xl font-black flex items-center gap-2 mb-4"><i class="ri-folder-3-line text-3xl"></i> 项目</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                <div class="brutal-card bg-white p-6">
+                    <h3 class="font-black text-lg flex items-center gap-2"><i class="ri-rocket-2-line text-2xl"></i> AI+遥感影像地物分类优化 <span class="text-sm font-bold bg-purple px-2">计划大二上</span></h3>
+                    <div class="mt-2 flex flex-wrap gap-1.5">
+                        <span class="badge-sticker" style="--rot:-1deg; background:#A3E635;">Python基础</span>
+                        <span class="badge-sticker" style="--rot:1.5deg; background:#38BDF8;">U-Net</span>
+                        <span class="badge-sticker" style="--rot:-0.5deg; background:#FDE047;">遥感</span>
+                    </div>
+                    <ul class="mt-3 text-sm font-medium list-disc list-inside">
+                        <li>基于高分遥感影像，参与地物分类标注与模型优化。</li>
+                        <li>预期标注一致性 90%+，模型准确率提升 5%+。</li>
+                        <li>开发自动化质检脚本，人工复核效率提升 83%。</li>
+                    </ul>
+                </div>
+                <div class="brutal-card bg-white p-6">
+                    <h3 class="font-black text-lg flex items-center gap-2"><i class="ri-map-pin-2-line text-2xl"></i> 基于 POI 的城市设施覆盖分析 <span class="text-sm font-bold bg-yellow px-2">计划大二课程</span></h3>
+                    <div class="mt-2 flex flex-wrap gap-1.5">
+                        <span class="badge-sticker" style="--rot:1deg; background:#A3E635;">Python基础</span>
+                        <span class="badge-sticker" style="--rot:-1.5deg; background:#F472B6;">NetworkX</span>
+                        <span class="badge-sticker" style="--rot:2deg; background:#38BDF8;">Folium</span>
+                    </div>
+                    <ul class="mt-3 text-sm font-medium list-disc list-inside">
+                        <li>基于 OSM 路网与 POI 分析设施覆盖度，计算等时圈。</li>
+                        <li>产出交互式可视化地图与选址优化建议报告。</li>
+                    </ul>
+                </div>
+                <div class="brutal-card bg-white p-6">
+                    <h3 class="font-black text-lg flex items-center gap-2"><i class="ri-folder-2-line text-2xl"></i> 高中地理区域综合调研 <span class="text-sm font-bold bg-mint px-2">已完成</span></h3>
+                    <div class="mt-2 flex flex-wrap gap-1.5">
+                        <span class="badge-sticker" style="--rot:-0.5deg; background:#C084FC;">QGIS</span>
+                        <span class="badge-sticker" style="--rot:1.2deg; background:#FDE047;">数据分析</span>
+                    </div>
+                    <ul class="mt-3 text-sm font-medium list-disc list-inside">
+                        <li>组织 5 人团队，发放 180 份问卷，绘制 3 期土地利用专题图。</li>
+                        <li>撰写 1.2 万字报告，获校级优秀实践奖（Top 5%）。</li>
+                    </ul>
+                </div>
+                <div class="brutal-card bg-white p-6">
+                    <h3 class="font-black text-lg flex items-center gap-2"><i class="ri-folder-2-line text-2xl"></i> 个人 AI 简历门户 &amp; 自动化 PPT <span class="text-sm font-bold bg-purple px-2">已完成</span></h3>
+                    <div class="mt-2 flex flex-wrap gap-1.5">
+                        <span class="badge-sticker" style="--rot:1deg; background:#A3E635;">Trae CN</span>
+                        <span class="badge-sticker" style="--rot:-1.8deg; background:#38BDF8;">Python基础</span>
+                    </div>
+                    <ul class="mt-3 text-sm font-medium list-disc list-inside">
+                        <li>搭建响应式简历站，集成技能矩阵与证书墙。</li>
+                        <li>AI 驱动 PPT 生成，3 小时压缩至 20 分钟。</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== 技能 ===== -->
+        <section id="skills" class="mb-8">
+            <h2 class="text-2xl font-black flex items-center gap-2 mb-4"><i class="ri-cpu-line text-3xl"></i> 技能矩阵</h2>
+            <div class="brutal-card bg-white p-6">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div><span class="font-bold text-sm">Python (基础，持续学习)</span><div class="w-full h-3 bg-black mt-1"><div class="h-full bg-mint" style="width:50%"></div></div></div>
+                    <div><span class="font-bold text-sm">C++ (辅修计划，入门)</span><div class="w-full h-3 bg-black mt-1"><div class="h-full bg-yellow" style="width:30%"></div></div></div>
+                    <div><span class="font-bold text-sm">AI 大模型应用 (RAG/Agent)</span><div class="w-full h-3 bg-black mt-1"><div class="h-full bg-purple" style="width:85%"></div></div></div>
+                    <div><span class="font-bold text-sm">Prompt / 微调</span><div class="w-full h-3 bg-black mt-1"><div class="h-full bg-sky" style="width:80%"></div></div></div>
+                    <div><span class="font-bold text-sm">GIS / 遥感处理</span><div class="w-full h-3 bg-black mt-1"><div class="h-full bg-pink" style="width:65%"></div></div></div>
+                    <div><span class="font-bold text-sm">数据标注 / 训练流程</span><div class="w-full h-3 bg-black mt-1"><div class="h-full bg-mint" style="width:85%"></div></div></div>
+                </div>
+                <div class="mt-5 flex flex-wrap gap-2">
+                    <span class="badge-sticker" style="--rot:-1deg; background:#A3E635;">Python基础</span>
+                    <span class="badge-sticker" style="--rot:1.5deg; background:#C084FC;">GIS</span>
+                    <span class="badge-sticker" style="--rot:-0.8deg; background:#FDE047;">RAG</span>
+                    <span class="badge-sticker" style="--rot:2deg; background:#38BDF8;">智能体</span>
+                    <span class="badge-sticker" style="--rot:-2.2deg; background:#F472B6;">微调</span>
+                    <span class="badge-sticker" style="--rot:1.8deg; background:#A3E635;">Prompt</span>
+                    <span class="badge-sticker" style="--rot:-1.5deg; background:#C084FC;">遥感</span>
+                    <span class="badge-sticker" style="--rot:0.5deg; background:#FDE047;">数据分析</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== 教育 ===== -->
+        <section id="education" class="mb-8">
+            <h2 class="text-2xl font-black flex items-center gap-2 mb-4"><i class="ri-school-line text-3xl"></i> 教育背景</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                <div class="brutal-card bg-white p-6">
+                    <h3 class="font-black text-lg">中国地质大学（武汉）· 地理科学（规划 GIS 方向）</h3>
+                    <div class="text-sm font-bold mt-1">2026.09 – 2030.06（预期）· 目标 GPA 4.0+/5.0</div>
+                    <ul class="mt-3 text-sm font-medium list-disc list-inside">
+                        <li><span class="font-black">核心课程：</span>Python 程序设计、C++ 程序设计、GIS、遥感原理、空间分析</li>
+                        <li><span class="font-black">辅修计划：</span><span class="bg-yellow px-1">大二开始辅修计算机科学与技术</span>（数据结构、算法、数据库）</li>
+                        <li><span class="font-black">升学目标：</span>跨保 <span class="bg-mint px-1">地理信息 + AI 交叉方向</span> 顶尖院校</li>
+                    </ul>
+                </div>
+                <div class="brutal-card bg-white p-6">
+                    <h3 class="font-black text-lg">规划与预期</h3>
+                    <ul class="mt-3 text-sm font-medium list-disc list-inside">
+                        <li><span class="bg-yellow px-1">大学英语四级（CET-4）</span> 计划大一通过</li>
+                        <li><span class="bg-purple px-1">全国计算机等级二级（Python）</span> 计划大一下报考</li>
+                        <li><span class="bg-mint px-1">参与 GIS+AI 科研与竞赛</span>，积累项目经验</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== 证书 ===== -->
+        <section id="certificates" class="mb-8">
+            <h2 class="text-2xl font-black flex items-center gap-2 mb-4"><i class="ri-award-line text-3xl"></i> 获奖与证书</h2>
+            <div class="brutal-card bg-white p-6">
+                <h3 class="font-black text-lg">AI 与工程技术认证（共 14 项，全部已获取）</h3>
+                <div class="mt-3 overflow-x-auto">
+                    <table class="w-full text-sm font-bold border-2 border-black">
+                        <thead><tr class="border-b-2 border-black bg-mint"><th class="text-left py-2 px-2">认证名称</th><th class="text-left py-2 px-2">颁发机构</th><th class="text-left py-2 px-2">日期</th></tr></thead>
+                        <tbody>
+                            <tr><td class="py-1.5 px-2 border-b border-black">RAG 工程师认证</td><td class="py-1.5 px-2 border-b border-black">科大讯飞 AI 大学堂</td><td class="py-1.5 px-2 border-b border-black">2026-07</td></tr>
+                            <tr><td class="py-1.5 px-2 border-b border-black">智能体工程师认证</td><td class="py-1.5 px-2 border-b border-black">科大讯飞 AI 大学堂</td><td class="py-1.5 px-2 border-b border-black">2026-07</td></tr>
+                            <tr><td class="py-1.5 px-2 border-b border-black">微调工程师认证</td><td class="py-1.5 px-2 border-b border-black">科大讯飞 AI 大学堂</td><td class="py-1.5 px-2 border-b border-black">2026-07</td></tr>
+                            <tr><td class="py-1.5 px-2 border-b border-black">Prompt 工程师认证</td><td class="py-1.5 px-2 border-b border-black">科大讯飞 AI 大学堂</td><td class="py-1.5 px-2 border-b border-black">2026-07</td></tr>
+                            <tr><td class="py-1.5 px-2 border-b border-black">人工智能训练师（高级）</td><td class="py-1.5 px-2 border-b border-black">阿里达摩院</td><td class="py-1.5 px-2 border-b border-black">2026-07</td></tr>
+                            <tr><td class="py-1.5 px-2 border-b border-black">人工智能训练师（初级）</td><td class="py-1.5 px-2 border-b border-black">阿里达摩院</td><td class="py-1.5 px-2 border-b border-black">2026-07</td></tr>
+                            <tr><td class="py-1.5 px-2 border-b border-black">Agent Engineer</td><td class="py-1.5 px-2 border-b border-black">Datawhale × 蚂蚁集团</td><td class="py-1.5 px-2 border-b border-black">2026-07</td></tr>
+                            <tr><td class="py-1.5 px-2 border-b border-black">AI+编程能力认证</td><td class="py-1.5 px-2 border-b border-black">Datawhale × 豆包 MarsCode</td><td class="py-1.5 px-2 border-b border-black">2026-07</td></tr>
+                            <tr><td class="py-1.5 px-2 border-b border-black">人工智能初识微认证</td><td class="py-1.5 px-2 border-b border-black">华为</td><td class="py-1.5 px-2 border-b border-black">2026-07</td></tr>
+                            <tr><td class="py-1.5 px-2 border-b border-black">AIGC 设计基础 (PAI ArtLab)</td><td class="py-1.5 px-2 border-b border-black">阿里云</td><td class="py-1.5 px-2 border-b border-black">2026-08</td></tr>
+                            <tr><td class="py-1.5 px-2 border-b border-black">大模型：百炼智能体应用</td><td class="py-1.5 px-2 border-b border-black">阿里云</td><td class="py-1.5 px-2 border-b border-black">2026-08</td></tr>
+                            <tr><td class="py-1.5 px-2 border-b border-black">大模型：Spring AI 入门</td><td class="py-1.5 px-2 border-b border-black">阿里云</td><td class="py-1.5 px-2 border-b border-black">2026-08</td></tr>
+                            <tr><td class="py-1.5 px-2 border-b border-black">VISION 人工智能设计（入门）</td><td class="py-1.5 px-2 border-b border-black">阿里云</td><td class="py-1.5 px-2 border-b border-black">2026-08</td></tr>
+                            <tr><td class="py-1.5 px-2">Masterclass on AI (ITC)</td><td class="py-1.5 px-2">国际培训中心</td><td class="py-1.5 px-2">2026-08</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="mt-6">
+                    <h4 class="font-black text-lg">学术与综合荣誉</h4>
+                    <ul class="mt-2 text-sm font-medium list-disc list-inside">
+                        <li>聊城一中校级优秀实践奖（2025，Top 5%）</li>
+                        <li><span class="bg-yellow px-1">大学英语四级（CET-4，计划大一通过）</span></li>
+                        <li><span class="bg-purple px-1">全国计算机等级考试二级（Python，计划大一下报考）</span></li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== 图片墙 ===== -->
+        <section id="gallery" class="mb-8">
+            <h2 class="text-2xl font-black flex items-center gap-2 mb-4"><i class="ri-image-2-line text-3xl"></i> 随拍 &amp; 证书图集</h2>
+
+            <div class="brutal-card bg-white p-6 mb-6">
+                <h3 class="font-black text-lg flex items-center gap-2"><i class="ri-camera-3-line"></i> 个人随拍</h3>
+                <div class="mt-3 flex flex-col sm:flex-row gap-4 items-start">
+                    <div class="w-full sm:w-2/3 aspect-video border-2 border-black shadow-[3px_3px_0px_0px_#000] overflow-hidden bg-white">
+                        <img src="随拍.jpg" alt="家中随拍" class="w-full h-full object-cover" onerror="this.parentElement.innerHTML='<div class=\'flex items-center justify-center h-full text-black font-bold text-sm\'>⚠️ 随拍.jpg 加载失败</div>'" />
+                    </div>
+                    <div class="flex-1 text-sm font-bold">
+                        <p>🏠 家中随拍，记录生活点滴。</p>
+                        <p class="text-sm mt-1">—— 真实而亲切</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="brutal-card bg-white p-6">
+                <h3 class="font-black text-lg flex items-center gap-2"><i class="ri-image-add-line"></i> 全部 14 项认证证书</h3>
+                <div class="cert-grid mt-3">
+                    <img src="微信图片_20260810175733_41_789.jpg" alt="智能体工程师" onerror="this.alt='加载失败'" />
+                    <img src="微信图片_20260810175734_42_789.jpg" alt="RAG工程师" onerror="this.alt='加载失败'" />
+                    <img src="微信图片_20260805180945_31_789.jpg" alt="微调工程师" onerror="this.alt='加载失败'" />
+                    <img src="微信图片_20260810175735_43_789.jpg" alt="Prompt工程师" onerror="this.alt='加载失败'" />
+                    <img src="微信图片_20260810175739_47_789.jpg" alt="AI训练师高级" onerror="this.alt='加载失败'" />
+                    <img src="微信图片_20260810175740_48_789.jpg" alt="AI训练师初级" onerror="this.alt='加载失败'" />
+                    <img src="微信图片_20260810175737_45_789.jpg" alt="Agent Engineer" onerror="this.alt='加载失败'" />
+                    <img src="微信图片_20260810175738_46_789.jpg" alt="AI+编程能力" onerror="this.alt='加载失败'" />
+                    <img src="微信图片_20260810175736_44_789.jpg" alt="华为AI微认证" onerror="this.alt='加载失败'" />
+                    <img src="img_2e9772ea49db4a48c828b515771ad8be.png" alt="阿里云AIGC" onerror="this.alt='加载失败'" />
+                    <img src="img_5187a3e3015c1304990e0031aa646c34.png" alt="阿里云百炼智能体" onerror="this.alt='加载失败'" />
+                    <img src="img_b52f145451de0a715a38f6ddcfae26a3.png" alt="阿里云Spring AI" onerror="this.alt='加载失败'" />
+                    <img src="img_f6ee88ee3bd1e68ddfdda6b15806baa3.png" alt="阿里云VISION" onerror="this.alt='加载失败'" />
+                    <img src="微信图片_20260818231726_95_789.jpg" alt="ITC AI Masterclass" onerror="this.alt='加载失败'" />
+                </div>
+                <p class="text-xs font-bold mt-3">* 若部分图片未显示，请确认文件名与路径正确</p>
+            </div>
+        </section>
+
+        <!-- ===== 个人优势 ===== -->
+        <section class="mb-8">
+            <h2 class="text-2xl font-black flex items-center gap-2 mb-4"><i class="ri-sparkling-2-line text-3xl"></i> 个人优势</h2>
+            <div class="brutal-card bg-white p-6">
+                <ul class="space-y-3 text-sm font-medium">
+                    <li><span class="font-black text-lg">GIS+AI 复合型知识结构</span>：地理信息科学专业背景 + 14 项 AI 领域权威认证，涵盖讯飞、达摩院、阿里云、Datawhale、华为等，具备从空间数据采集、处理、分析到 AI 建模与落地的完整链路认知，规划计算机辅修夯实底层代码能力。</li>
+                    <li><span class="font-black text-lg">AI 原生工作流与工具敏锐度</span>：深度使用 Trae CN、元宝、ima、千问等 AI 工具贯穿编程、写作、PPT 制作；熟练使用剪映，具备极强的效率意识与工具杠杆放大能力。</li>
+                    <li><span class="font-black text-lg">教学沟通与知识传递能力</span>：暑期教学经验覆盖 40+ 学员，善于将复杂概念转化为易懂内容，具备良好的课堂组织与互动能力。</li>
+                    <li><span class="font-black text-lg">强自驱力与快速迭代</span>：从 AI 零基础到 14 项权威认证仅用时 4 个月，主动构建个人品牌站点与自动化工具链，始终以结果为导向，追求高效规范的交付，致力于在地理信息与人工智能交叉领域持续深造。</li>
+                    <li><span class="font-black text-lg">广泛技术兴趣与长期运动自律</span>：热爱机器人、AI 与计算机技术（非专业，持续自学），保持跨领域技术视野；同时坚持健身、跑步与乒乓球训练（乒乓球专项 6 年），具备良好的身体素质与意志品质，善于在压力下保持专注与稳定输出。</li>
+                </ul>
+            </div>
+        </section>
+
+        <footer class="text-center text-sm font-bold border-t-2 border-black pt-4 mt-4">
+            © 2026 张致远 · 简历最后更新 2026 年 8 月 · 波普硬核新丑风
+        </footer>
+    </main>
+
+    <!-- ===== 返回顶部 ===== -->
+    <button id="backTop" class="fixed bottom-6 right-6 brutal-btn bg-yellow p-3 text-2xl font-black z-40 flex items-center justify-center" aria-label="返回顶部">
+        <i class="ri-arrow-up-line"></i>
+    </button>
+
+    <script>
+        function copyEmail() {
+            const email = '2965927598@qq.com';
+            navigator.clipboard.writeText(email).then(() => {
+                showToast('📧 邮箱已复制: ' + email);
+            }).catch(() => {
+                const input = document.createElement('input');
+                input.value = email;
+                document.body.appendChild(input);
+                input.select();
+                document.execCommand('copy');
+                document.body.removeChild(input);
+                showToast('📧 邮箱已复制: ' + email);
+            });
+        }
+
+        function showToast(msg) {
+            const existing = document.querySelector('.toast-brutal');
+            if (existing) existing.remove();
+            const toast = document.createElement('div');
+            toast.className = 'toast-brutal fixed bottom-6 left-1/2 -translate-x-1/2 bg-white border-2 border-black shadow-[4px_4px_0px_0px_#000] px-5 py-3 font-bold text-sm z-50 flex items-center gap-3 transition-all duration-200';
+            toast.innerHTML = `<i class="ri-checkbox-circle-fill text-xl text-green-600"></i> ${msg}`;
+            document.body.appendChild(toast);
+            setTimeout(() => {
+                toast.style.transform = 'translateX(-50%) translateY(20px)';
+                toast.style.opacity = '0';
+                setTimeout(() => toast.remove(), 300);
+            }, 2500);
+        }
+
+        document.getElementById('emailBtn').addEventListener('click', function(e) {
+            e.preventDefault();
+            window.location.href = 'mailto:2965927598@qq.com';
+        });
+
+        const backBtn = document.getElementById('backTop');
+        window.addEventListener('scroll', function() {
+            if (window.scrollY > 400) {
+                backBtn.classList.remove('opacity-0', 'invisible');
+                backBtn.classList.add('opacity-100', 'visible');
+            } else {
+                backBtn.classList.add('opacity-0', 'invisible');
+                backBtn.classList.remove('opacity-100', 'visible');
+            }
+        });
+        backBtn.addEventListener('click', function() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    e.preventDefault();
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+    </script>
+
+</body>
+</html>
