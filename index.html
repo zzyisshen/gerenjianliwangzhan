@@ -102,6 +102,11 @@
         @media (max-width: 640px) {
             .avatar-img { width: 90px; height: 90px; }
         }
+        
+        /* 放大查看功能鼠标样式 */
+        img:not(.avatar-img) {
+            cursor: zoom-in;
+        }
     </style>
 </head>
 <body>
@@ -200,6 +205,10 @@
             <h2 class="text-2xl font-black flex items-center gap-2 mb-4"><i class="ri-flashlight-fill text-3xl"></i> 亮点成果</h2>
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                 <div class="brutal-card bg-white p-4 hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[6px_6px_0px_0px_#000] transition-all">
+                    <div class="text-3xl font-black bg-sky inline-block px-2">前 3%</div>
+                    <div class="text-sm font-bold mt-1">OceanBase 数据库大赛初赛（1931支队伍）</div>
+                </div>
+                <div class="brutal-card bg-white p-4 hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[6px_6px_0px_0px_#000] transition-all">
                     <div class="text-3xl font-black bg-mint inline-block px-2">国赛</div>
                     <div class="text-sm font-bold mt-1">第19届先进机器人及仿真技术大赛入围国赛</div>
                 </div>
@@ -210,10 +219,6 @@
                 <div class="brutal-card bg-white p-4 hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[6px_6px_0px_0px_#000] transition-all">
                     <div class="text-3xl font-black bg-yellow inline-block px-2">40+</div>
                     <div class="text-sm font-bold mt-1">暑期教学覆盖学员，班级反馈良好</div>
-                </div>
-                <div class="brutal-card bg-white p-4 hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[6px_6px_0px_0px_#000] transition-all">
-                    <div class="text-3xl font-black bg-sky inline-block px-2">3次</div>
-                    <div class="text-sm font-bold mt-1">1对1学科辅导（物理/数学）及全职托管经验</div>
                 </div>
             </div>
         </section>
@@ -338,8 +343,54 @@
 
         <!-- ===== 项目 ===== -->
         <section id="projects" class="mb-8">
-            <h2 class="text-2xl font-black flex items-center gap-2 mb-4"><i class="ri-folder-3-line text-3xl"></i> 项目</h2>
+            <h2 class="text-2xl font-black flex items-center gap-2 mb-4"><i class="ri-folder-3-line text-3xl"></i> 项目与竞赛</h2>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                
+                <!-- OceanBase 数据库大赛 -->
+                <div class="brutal-card bg-white p-6 md:col-span-2 border-[3px] border-black shadow-[6px_6px_0px_0px_#000]">
+                    <h3 class="font-black text-lg flex items-center gap-2 flex-wrap">
+                        <i class="ri-database-2-line text-2xl text-sky-600"></i> 
+                        第六届 OceanBase 数据库大赛 · AI 生态赛道
+                        <span class="text-sm font-bold bg-sky px-2 text-black border-2 border-black">初赛全国前 3%</span>
+                    </h3>
+                    <div class="mt-2 flex flex-wrap gap-1.5">
+                        <span class="badge-sticker" style="--rot:-1deg; background:#A3E635;">Python</span>
+                        <span class="badge-sticker" style="--rot:1.5deg; background:#38BDF8;">大模型应用</span>
+                        <span class="badge-sticker" style="--rot:-0.5deg; background:#FDE047;">向量检索</span>
+                        <span class="badge-sticker" style="--rot:2deg; background:#C084FC;">Linux 部署</span>
+                    </div>
+                    <div class="mt-3 text-sm font-medium">
+                        <p class="font-bold mb-2">团队：「害怕逻辑」（华中科技大学 × 中国地质大学联队），指导老师：谭志虎。初赛进行中（截至 11 月中旬）暂列全国第 60 / 1931（前 3%）。</p>
+                        <ul class="mt-2 list-disc list-inside space-y-1.5">
+                            <li><strong>全栈交付：</strong>独立负责 AI 生态赛道全部赛题交付（高德 / ModelScope / MiniMax / Qoder / AMD / seekdb 端侧联动），覆盖模型接入、数据链路构建到平台提测全流程。</li>
+                            <li><strong>空间+向量检索：</strong>设计并发布 ModelScope 社区 Skill，使用 Python 零依赖实现 Haversine 地理距离、余弦相似度与 RRF 多路融合排序；基于高德 Web 服务 API 构建空间检索 Skill，完成步行路线真实数据接入与数据来源可信性校验。</li>
+                            <li><strong>SDD 上下文管理：</strong>基于 MiniMax 大模型 + PowerContext + seekdb 实现上下文管理链路：规格/代码/测试资料检索 → 大模型代码修改 → 回归测试验证 → 任务状态持久化复用。</li>
+                            <li><strong>性能调优与排障：</strong>在 AMD ROCm 上用 hipVS / CAGRA 重构 HNSW 图建图，端到端 DDL 提速 3.5x，召回守住 0.95 门槛（该题 18.159/20，185 支有分队伍前 1/3）；参与 seekdb 端侧部署与排障（deb / Docker 双路线、遥测数据链路、UUID 数据格式校验定位）。</li>
+                            <li><strong>AI Coding 实践：</strong>基于 Qoder 智能体编程平台完成赛题交付；熟练运用 Git 多人协作与私有仓库提测流、AI Coding 工作流（派活-验收模式）及判题机制分析。</li>
+                        </ul>
+                    </div>
+                    
+                    <!-- OceanBase 4张图片展示 -->
+                    <div class="mt-4 grid grid-cols-2 md:grid-cols-4 gap-2">
+                        <div class="border-2 border-black bg-white overflow-hidden shadow-[2px_2px_0px_0px_#000]">
+                            <img src="058d2a98e045843095c13c1d72790d3e.jpg" alt="大赛官网" class="w-full h-24 object-cover object-top" onerror="this.parentElement.innerHTML='<div class=\'flex items-center justify-center h-24 text-xs font-bold p-2 text-center\'>⚠️ 图片加载失败<br>058d2a98e045843095c13c1d72790d3e.jpg</div>'" />
+                            <div class="text-[10px] font-bold text-center bg-gray-100 border-t-2 border-black py-1">大赛官网</div>
+                        </div>
+                        <div class="border-2 border-black bg-white overflow-hidden shadow-[2px_2px_0px_0px_#000]">
+                            <img src="929fd4cbe83902bedfb5aee5589c794a.jpg" alt="初赛英雄榜" class="w-full h-24 object-cover object-top" onerror="this.parentElement.innerHTML='<div class=\'flex items-center justify-center h-24 text-xs font-bold p-2 text-center\'>⚠️ 图片加载失败<br>929fd4cbe83902bedfb5aee5589c794a.jpg</div>'" />
+                            <div class="text-[10px] font-bold text-center bg-gray-100 border-t-2 border-black py-1">初赛英雄榜</div>
+                        </div>
+                        <div class="border-2 border-black bg-white overflow-hidden shadow-[2px_2px_0px_0px_#000]">
+                            <img src="943fb0b8dbb581b5c32fd45497dc5a49.jpg" alt="团队信息" class="w-full h-24 object-cover object-top" onerror="this.parentElement.innerHTML='<div class=\'flex items-center justify-center h-24 text-xs font-bold p-2 text-center\'>⚠️ 图片加载失败<br>943fb0b8dbb581b5c32fd45497dc5a49.jpg</div>'" />
+                            <div class="text-[10px] font-bold text-center bg-gray-100 border-t-2 border-black py-1">团队信息</div>
+                        </div>
+                        <div class="border-2 border-black bg-white overflow-hidden shadow-[2px_2px_0px_0px_#000]">
+                            <img src="ca67bab703e222ee14e9188837fe1512.jpg" alt="赛事介绍" class="w-full h-24 object-cover object-top" onerror="this.parentElement.innerHTML='<div class=\'flex items-center justify-center h-24 text-xs font-bold p-2 text-center\'>⚠️ 图片加载失败<br>ca67bab703e222ee14e9188837fe1512.jpg</div>'" />
+                            <div class="text-[10px] font-bold text-center bg-gray-100 border-t-2 border-black py-1">赛事介绍</div>
+                        </div>
+                    </div>
+                </div>
+
                 <!-- 机器人大赛项目 -->
                 <div class="brutal-card bg-white p-6 md:col-span-2 border-[3px] border-black shadow-[6px_6px_0px_0px_#000]">
                     <h3 class="font-black text-lg flex items-center gap-2">
@@ -414,9 +465,10 @@
                     <p class="text-sm font-medium">关注国际大学生创新创业大赛（iCAN），期望通过跨学科的团队协作，将地信技术、AI 与硬件结合，落地具有实际应用价值的创新项目。</p>
                 </div>
                 <!-- OceanBase -->
-                <div class="brutal-card bg-white p-6 border-l-8 border-l-yellow-400 hover:rotate-1 transition-transform">
+                <div class="brutal-card bg-white p-6 border-l-8 border-l-yellow-400 hover:rotate-1 transition-transform relative overflow-hidden">
+                    <div class="absolute -right-2 -top-2 bg-yellow text-black text-xs font-bold px-3 py-1 border-2 border-black rotate-12">已参赛</div>
                     <h3 class="font-black text-xl flex items-center gap-2 mb-2"><i class="ri-database-2-line text-yellow-600"></i> OceanBase 数据库大赛</h3>
-                    <p class="text-sm font-medium">对分布式数据库底层原理与性能优化充满兴趣，期望通过参与 OceanBase 大赛，提升在大数据量处理与底层系统架构方面的实操能力。</p>
+                    <p class="text-sm font-medium">对分布式数据库底层原理与性能优化充满兴趣。目前已带队参与第六届大赛并取得初赛前 3% 成绩，期望继续提升在大数据量处理与底层系统架构方面的实操能力。</p>
                 </div>
             </div>
         </section>
@@ -527,7 +579,7 @@
             </div>
         </section>
 
-        <!-- ===== 更早以前的荣誉（新开一栏） ===== -->
+        <!-- ===== 更早以前的荣誉 ===== -->
         <section id="early-honors" class="mb-8">
             <h2 class="text-2xl font-black flex items-center gap-2 mb-4"><i class="ri-history-line text-3xl"></i> 早期荣誉</h2>
             <div class="brutal-card bg-white p-6">
@@ -604,7 +656,7 @@
                 <ul class="space-y-3 text-sm font-medium">
                     <li><span class="font-black text-lg">GIS+AI 复合型知识结构</span>：地理信息科学专业背景 + 14 项 AI 领域权威认证，涵盖讯飞、达摩院、阿里云、Datawhale、华为等，具备从空间数据采集、处理、分析到 AI 建模与落地的完整链路认知。</li>
                     <li><span class="font-black text-lg">AI 原生工作流与工具敏锐度</span>：深度使用 Trae CN、元宝、ima、千问等 AI 工具贯穿编程、写作、PPT 制作；熟练使用剪映，具备极强的效率意识与工具杠杆放大能力。</li>
-                    <li><span class="font-black text-lg">竞赛驱动与工程实践</span>：积极参与高水平学科竞赛，如第十九届先进机器人及仿真技术大赛并成功入围国赛，具备将理论知识转化为实际解决方案的工程能力与团队协作精神。</li>
+                    <li><span class="font-black text-lg">竞赛驱动与工程实践</span>：积极参与高水平学科竞赛，如 OceanBase 数据库大赛（前3%）与先进机器人及仿真技术大赛（国赛入围），具备将理论知识转化为实际解决方案的工程能力与团队协作精神。</li>
                     <li><span class="font-black text-lg">教学沟通与知识传递能力</span>：暑期教学经验覆盖 40+ 学员，并具备多次1对1学科辅导及全职托管经验，善于将复杂概念转化为易懂内容，具备良好的课堂组织与互动能力。</li>
                     <li><span class="font-black text-lg">强自驱力与快速迭代</span>：从 AI 零基础到 14 项权威认证仅用时 4 个月，主动构建个人品牌站点与自动化工具链，始终以结果为导向，追求高效规范的交付。</li>
                     <li><span class="font-black text-lg">广泛技术兴趣与长期运动自律</span>：热爱机器人、AI 与计算机技术，保持跨领域技术视野；同时坚持健身、跑步与乒乓球训练（乒乓球院队成员，专项 6 年），具备良好的身体素质与意志品质。</li>
@@ -622,7 +674,16 @@
         <i class="ri-arrow-up-line"></i>
     </button>
 
+    <!-- ===== 图片放大灯箱 (Lightbox) ===== -->
+    <div id="lightbox" class="fixed inset-0 z-[9999] bg-black/90 hidden items-center justify-center p-4 backdrop-blur-sm cursor-zoom-out">
+        <button id="closeLightbox" class="absolute top-6 right-6 text-white bg-black/50 border-2 border-white w-12 h-12 rounded-full flex items-center justify-center font-bold text-xl hover:scale-110 hover:bg-black transition-all">
+            <i class="ri-close-line"></i>
+        </button>
+        <img id="lightboxImg" src="" alt="放大图片" class="max-w-[95vw] max-h-[95vh] object-contain border-4 border-white bg-white shadow-[0_0_50px_rgba(255,255,255,0.2)] cursor-default" />
+    </div>
+
     <script>
+        // ===== 邮箱复制功能 =====
         function copyEmail() {
             const email = '2965927598@qq.com';
             navigator.clipboard.writeText(email).then(() => {
@@ -642,7 +703,7 @@
             const existing = document.querySelector('.toast-brutal');
             if (existing) existing.remove();
             const toast = document.createElement('div');
-            toast.className = 'toast-brutal fixed bottom-6 left-1/2 -translate-x-1/2 bg-white border-2 border-black shadow-[4px_4px_0px_0px_#000] px-5 py-3 font-bold text-sm z-50 flex items-center gap-3 transition-all duration-200';
+            toast.className = 'toast-brutal fixed bottom-6 left-1/2 -translate-x-1/2 bg-white border-2 border-black shadow-[4px_4px_0px_0px_#000] px-5 py-3 font-bold text-sm z-[10000] flex items-center gap-3 transition-all duration-200';
             toast.innerHTML = `<i class="ri-checkbox-circle-fill text-xl text-green-600"></i> ${msg}`;
             document.body.appendChild(toast);
             setTimeout(() => {
@@ -657,6 +718,7 @@
             window.location.href = 'mailto:2965927598@qq.com';
         });
 
+        // ===== 返回顶部 =====
         const backBtn = document.getElementById('backTop');
         window.addEventListener('scroll', function() {
             if (window.scrollY > 400) {
@@ -671,12 +733,65 @@
             window.scrollTo({ top: 0, behavior: 'smooth' });
         });
 
+        // ===== 平滑锚点滚动 =====
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function(e) {
                 const target = document.querySelector(this.getAttribute('href'));
                 if (target) {
                     e.preventDefault();
                     target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+
+        // ===== 图片放大功能 (Lightbox) =====
+        document.addEventListener('DOMContentLoaded', function() {
+            const lightbox = document.getElementById('lightbox');
+            const lightboxImg = document.getElementById('lightboxImg');
+            const closeBtn = document.getElementById('closeLightbox');
+
+            // 选取所有除了头像之外的图片
+            const images = document.querySelectorAll('img:not(.avatar-img)');
+
+            images.forEach(img => {
+                img.addEventListener('click', function(e) {
+                    // 如果图片已经显示为 none（说明加载失败），则直接返回
+                    if (this.style.display === 'none') return;
+                    
+                    lightboxImg.src = this.src;
+                    lightbox.classList.remove('hidden');
+                    lightbox.classList.add('flex');
+                    document.body.style.overflow = 'hidden'; // 防止背景滚动
+                });
+            });
+
+            // 关闭灯箱
+            function closeLightbox() {
+                lightbox.classList.add('hidden');
+                lightbox.classList.remove('flex');
+                lightboxImg.src = '';
+                document.body.style.overflow = ''; // 恢复滚动
+            }
+
+            closeBtn.addEventListener('click', closeLightbox);
+            
+            // 点击图片外的黑色遮罩也可关闭
+            lightbox.addEventListener('click', function(e) {
+                if (e.target === lightbox || e.target === lightboxImg) {
+                    // 如果点击的是图片本身也可以选择关闭，或者阻止，这里选择点击遮罩关闭
+                    if(e.target !== lightboxImg) {
+                         closeLightbox();
+                    }
+                }
+            });
+            
+            // 点击放大后的图片本身也可关闭
+            lightboxImg.addEventListener('click', closeLightbox);
+
+            // 按下 Esc 键关闭
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape' && !lightbox.classList.contains('hidden')) {
+                    closeLightbox();
                 }
             });
         });
